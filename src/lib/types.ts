@@ -109,3 +109,34 @@ export interface Notification {
   time: string;
   read: boolean;
 }
+
+// ─── AI Usage Types ─────────────────────────────────────────────────
+export type AIModelProvider = "OpenAI" | "Anthropic" | "Stability AI" | "Google" | "Internal";
+
+export interface AIModelUsage {
+  id: string;
+  model: string;
+  provider: AIModelProvider;
+  useCase: string;
+  category: "Content Generation" | "Image Processing" | "Data Analysis" | "Churn Prediction" | "Recommendations" | "Summarization";
+  status: "active" | "limited" | "deprecated";
+  inputTokens: number;
+  outputTokens: number;
+  totalTokens: number;
+  requests: number;
+  avgLatencyMs: number;
+  costPerMille: number; // cost per 1K tokens
+  totalCost: number;
+  lastUsed: string;
+}
+
+export interface AIUsageSummary {
+  totalTokensUsed: number;
+  totalCost: number;
+  totalRequests: number;
+  activeModels: number;
+  avgLatencyMs: number;
+  costTrend: number; // percentage change from prior month
+  tokensByCategory: { category: string; tokens: number; cost: number }[];
+  dailyUsage: { date: string; tokens: number; cost: number; requests: number }[];
+}

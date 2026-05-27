@@ -15,6 +15,7 @@ import {
   HelpCircle,
   Lock,
   Plug,
+  Brain,
 } from "lucide-react";
 
 const navSections = [
@@ -33,6 +34,7 @@ const navSections = [
     title: "Platform",
     items: [
       { label: "Integrations", href: "/dashboard/integrations", icon: Plug, active: true },
+      { label: "AI Usage", href: "/dashboard/ai-usage", icon: Brain, active: true },
       { label: "Settings", href: "/dashboard/settings", icon: Settings, active: true },
     ],
   },

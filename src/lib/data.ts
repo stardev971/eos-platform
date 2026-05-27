@@ -1,4 +1,4 @@
-import { Customer, AIInsight, Notification } from "./types";
+import { Customer, AIInsight, Notification, AIModelUsage, AIUsageSummary } from "./types";
 
 const months = ["Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun"];
 
@@ -1635,5 +1635,220 @@ export function getAggregateMetrics() {
     smbCount: customers.filter((c) => c.segment === "SMB").length,
     declinedEngagement: customers.filter((c) => c.featureUsageDecline > 15).length,
     failedPaymentAccounts: customers.filter((c) => c.failedPayments > 0).length,
+  };
+}
+
+// ─── AI Usage Data ──────────────────────────────────────────────────
+export const aiModelUsage: AIModelUsage[] = [
+  {
+    id: "ai-m-1",
+    model: "GPT-4o",
+    provider: "OpenAI",
+    useCase: "Customer Profitability Insights",
+    category: "Data Analysis",
+    status: "active",
+    inputTokens: 4_820_000,
+    outputTokens: 1_460_000,
+    totalTokens: 6_280_000,
+    requests: 18_420,
+    avgLatencyMs: 1240,
+    costPerMille: 0.005,
+    totalCost: 31.40,
+    lastUsed: "2026-05-26T14:32:00",
+  },
+  {
+    id: "ai-m-2",
+    model: "Claude 3.5 Sonnet",
+    provider: "Anthropic",
+    useCase: "Churn Risk Analysis & Scoring",
+    category: "Churn Prediction",
+    status: "active",
+    inputTokens: 6_150_000,
+    outputTokens: 2_080_000,
+    totalTokens: 8_230_000,
+    requests: 24_610,
+    avgLatencyMs: 980,
+    costPerMille: 0.003,
+    totalCost: 24.69,
+    lastUsed: "2026-05-26T15:01:00",
+  },
+  {
+    id: "ai-m-3",
+    model: "GPT-4o Mini",
+    provider: "OpenAI",
+    useCase: "Executive Report Summarization",
+    category: "Summarization",
+    status: "active",
+    inputTokens: 2_340_000,
+    outputTokens: 680_000,
+    totalTokens: 3_020_000,
+    requests: 9_870,
+    avgLatencyMs: 420,
+    costPerMille: 0.00015,
+    totalCost: 0.45,
+    lastUsed: "2026-05-26T12:18:00",
+  },
+  {
+    id: "ai-m-4",
+    model: "DALL·E 3",
+    provider: "OpenAI",
+    useCase: "Report Charts & Visual Assets",
+    category: "Image Processing",
+    status: "active",
+    inputTokens: 0,
+    outputTokens: 0,
+    totalTokens: 0,
+    requests: 1_240,
+    avgLatencyMs: 3800,
+    costPerMille: 0,
+    totalCost: 49.60,
+    lastUsed: "2026-05-25T18:45:00",
+  },
+  {
+    id: "ai-m-5",
+    model: "Claude 3 Haiku",
+    provider: "Anthropic",
+    useCase: "Support Ticket Classification",
+    category: "Content Generation",
+    status: "active",
+    inputTokens: 8_920_000,
+    outputTokens: 1_120_000,
+    totalTokens: 10_040_000,
+    requests: 42_300,
+    avgLatencyMs: 210,
+    costPerMille: 0.00025,
+    totalCost: 2.51,
+    lastUsed: "2026-05-26T15:12:00",
+  },
+  {
+    id: "ai-m-6",
+    model: "Gemini 1.5 Pro",
+    provider: "Google",
+    useCase: "Cross-Platform Data Correlation",
+    category: "Data Analysis",
+    status: "active",
+    inputTokens: 3_480_000,
+    outputTokens: 920_000,
+    totalTokens: 4_400_000,
+    requests: 8_640,
+    avgLatencyMs: 1560,
+    costPerMille: 0.0035,
+    totalCost: 15.40,
+    lastUsed: "2026-05-26T11:05:00",
+  },
+  {
+    id: "ai-m-7",
+    model: "GPT-4o",
+    provider: "OpenAI",
+    useCase: "AI Recommendation Engine",
+    category: "Recommendations",
+    status: "active",
+    inputTokens: 5_640_000,
+    outputTokens: 1_880_000,
+    totalTokens: 7_520_000,
+    requests: 15_280,
+    avgLatencyMs: 1380,
+    costPerMille: 0.005,
+    totalCost: 37.60,
+    lastUsed: "2026-05-26T14:55:00",
+  },
+  {
+    id: "ai-m-8",
+    model: "Stable Diffusion XL",
+    provider: "Stability AI",
+    useCase: "Customer Dashboard Thumbnails",
+    category: "Image Processing",
+    status: "limited",
+    inputTokens: 0,
+    outputTokens: 0,
+    totalTokens: 0,
+    requests: 620,
+    avgLatencyMs: 4200,
+    costPerMille: 0,
+    totalCost: 12.40,
+    lastUsed: "2026-05-24T09:30:00",
+  },
+  {
+    id: "ai-m-9",
+    model: "EOS Scoring v2",
+    provider: "Internal",
+    useCase: "Health Score Computation",
+    category: "Churn Prediction",
+    status: "active",
+    inputTokens: 12_400_000,
+    outputTokens: 3_200_000,
+    totalTokens: 15_600_000,
+    requests: 52_100,
+    avgLatencyMs: 85,
+    costPerMille: 0,
+    totalCost: 0,
+    lastUsed: "2026-05-26T15:15:00",
+  },
+  {
+    id: "ai-m-10",
+    model: "GPT-3.5 Turbo",
+    provider: "OpenAI",
+    useCase: "Notification Copy Generation",
+    category: "Content Generation",
+    status: "deprecated",
+    inputTokens: 1_200_000,
+    outputTokens: 380_000,
+    totalTokens: 1_580_000,
+    requests: 5_420,
+    avgLatencyMs: 320,
+    costPerMille: 0.0005,
+    totalCost: 0.79,
+    lastUsed: "2026-04-30T23:59:00",
+  },
+];
+
+export function getAIUsageSummary(): AIUsageSummary {
+  const activeModels = aiModelUsage.filter((m) => m.status === "active");
+  const totalTokensUsed = aiModelUsage.reduce((s, m) => s + m.totalTokens, 0);
+  const totalCost = aiModelUsage.reduce((s, m) => s + m.totalCost, 0);
+  const totalRequests = aiModelUsage.reduce((s, m) => s + m.requests, 0);
+  const avgLatencyMs = Math.round(
+    activeModels.reduce((s, m) => s + m.avgLatencyMs, 0) / activeModels.length
+  );
+
+  // Group tokens by category
+  const catMap = new Map<string, { tokens: number; cost: number }>();
+  aiModelUsage.forEach((m) => {
+    const existing = catMap.get(m.category) || { tokens: 0, cost: 0 };
+    catMap.set(m.category, {
+      tokens: existing.tokens + m.totalTokens,
+      cost: existing.cost + m.totalCost,
+    });
+  });
+  const tokensByCategory = Array.from(catMap.entries())
+    .map(([category, vals]) => ({ category, ...vals }))
+    .sort((a, b) => b.tokens - a.tokens);
+
+  // Simulated daily usage for the last 14 days
+  const dailyUsage = Array.from({ length: 14 }, (_, i) => {
+    const d = new Date("2026-05-26");
+    d.setDate(d.getDate() - (13 - i));
+    const base = totalRequests / 30;
+    const noise = 0.7 + Math.random() * 0.6;
+    const requests = Math.round(base * noise);
+    const tokens = Math.round((totalTokensUsed / 30) * noise);
+    const cost = parseFloat(((totalCost / 30) * noise).toFixed(2));
+    return {
+      date: d.toISOString().slice(0, 10),
+      tokens,
+      cost,
+      requests,
+    };
+  });
+
+  return {
+    totalTokensUsed,
+    totalCost,
+    totalRequests,
+    activeModels: activeModels.length,
+    avgLatencyMs,
+    costTrend: -8.3, // 8.3% decrease vs prior month (positive signal)
+    tokensByCategory,
+    dailyUsage,
   };
 }
