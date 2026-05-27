@@ -18,8 +18,8 @@ export default function ChurnPage() {
         className="flex items-start justify-between gap-4 flex-wrap"
       >
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center shadow-sm">
-            <AlertTriangle className="w-4.5 h-4.5 text-white" />
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-rose-500 to-orange-500 flex items-center justify-center shadow-sm ring-1 ring-white/40">
+            <AlertTriangle className="w-5 h-5 text-white" />
           </div>
           <div>
             <h1 className="text-xl font-bold text-surface-900 tracking-tight">Churn Risk Intelligence</h1>

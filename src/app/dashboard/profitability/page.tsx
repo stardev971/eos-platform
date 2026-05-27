@@ -23,8 +23,8 @@ export default function ProfitabilityPage() {
         className="flex items-start justify-between gap-4 flex-wrap"
       >
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-600 to-brand-800 flex items-center justify-center shadow-sm">
-            <DollarSign className="w-4.5 h-4.5 text-white" />
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center shadow-btn-brand ring-1 ring-white/40">
+            <DollarSign className="w-5 h-5 text-white" />
           </div>
           <div>
             <h1 className="text-xl font-bold text-surface-900 tracking-tight">Customer Profitability Intelligence</h1>

@@ -150,9 +150,9 @@ export function TopLossMakers() {
 
 export function SegmentBreakdown() {
   const segments = [
-    { name: "Enterprise", value: customers.filter((c) => c.segment === "Enterprise").reduce((s, c) => s + c.arr, 0), fill: "#4c6ef5" },
-    { name: "Mid-Market", value: customers.filter((c) => c.segment === "Mid-Market").reduce((s, c) => s + c.arr, 0), fill: "#748ffc" },
-    { name: "SMB", value: customers.filter((c) => c.segment === "SMB").reduce((s, c) => s + c.arr, 0), fill: "#bac8ff" },
+    { name: "Enterprise", value: customers.filter((c) => c.segment === "Enterprise").reduce((s, c) => s + c.arr, 0), fill: "#0284c7" },
+    { name: "Mid-Market", value: customers.filter((c) => c.segment === "Mid-Market").reduce((s, c) => s + c.arr, 0), fill: "#38bdf8" },
+    { name: "SMB", value: customers.filter((c) => c.segment === "SMB").reduce((s, c) => s + c.arr, 0), fill: "#bae6fd" },
   ];
   const total = segments.reduce((s, seg) => s + seg.value, 0);
 

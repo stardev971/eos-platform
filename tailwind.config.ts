@@ -10,17 +10,17 @@ const config: Config = {
     extend: {
       colors: {
         brand: {
-          50: "#f4f6fa",
-          100: "#e8edf5",
-          200: "#cdd6e8",
-          300: "#a3b3d1",
-          400: "#7289b5",
-          500: "#50689e",
-          600: "#3d5285",
-          700: "#33446d",
-          800: "#2d3b5b",
-          900: "#29334d",
-          950: "#1a2033",
+          50: "#eff9ff",
+          100: "#dcf1ff",
+          200: "#b3e4ff",
+          300: "#6fd0ff",
+          400: "#23b8fb",
+          500: "#0ea5e9",
+          600: "#0284c7",
+          700: "#0369a1",
+          800: "#075985",
+          900: "#0c4a6e",
+          950: "#082f49",
         },
         surface: {
           0: "#ffffff",
@@ -50,12 +50,14 @@ const config: Config = {
         ],
       },
       boxShadow: {
-        glow: "0 0 20px rgba(61, 82, 133, 0.12)",
-        card: "0 1px 3px rgba(0,0,0,0.03), 0 1px 2px rgba(0,0,0,0.04)",
+        glow: "0 0 24px rgba(14, 165, 233, 0.22)",
+        "glow-lg": "0 0 40px rgba(14, 165, 233, 0.28)",
+        card: "0 1px 3px rgba(15,23,42,0.04), 0 1px 2px rgba(15,23,42,0.04)",
         "card-hover":
-          "0 8px 25px rgba(0,0,0,0.06), 0 4px 10px rgba(0,0,0,0.03)",
+          "0 12px 30px rgba(2, 132, 199, 0.10), 0 6px 12px rgba(15,23,42,0.04)",
         panel:
-          "0 20px 60px rgba(0,0,0,0.08), 0 8px 20px rgba(0,0,0,0.04)",
+          "0 24px 70px rgba(15,23,42,0.14), 0 10px 24px rgba(15,23,42,0.06)",
+        "btn-brand": "0 6px 16px rgba(2, 132, 199, 0.28)",
       },
       animation: {
         "fade-in": "fadeIn 0.5s ease-out",
@@ -63,6 +65,8 @@ const config: Config = {
         "slide-in-right": "slideInRight 0.3s ease-out",
         shimmer: "shimmer 2s infinite linear",
         pulse_slow: "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        "gradient-pan": "gradientPan 6s ease infinite",
+        float: "float 5s ease-in-out infinite",
       },
       keyframes: {
         fadeIn: {
@@ -80,6 +84,14 @@ const config: Config = {
         shimmer: {
           "0%": { backgroundPosition: "-200% 0" },
           "100%": { backgroundPosition: "200% 0" },
+        },
+        gradientPan: {
+          "0%, 100%": { backgroundPosition: "0% 50%" },
+          "50%": { backgroundPosition: "100% 50%" },
+        },
+        float: {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-4px)" },
         },
       },
     },

@@ -22,9 +22,8 @@ export default function ProfitabilityKPICards() {
       change: "+12.4%",
       positive: true,
       icon: DollarSign,
-      iconColor: "#3b82f6",
-      bg: "bg-blue-50",
-      ringColor: "ring-blue-500/10",
+      gradient: "from-brand-400 to-brand-600",
+      ringColor: "ring-brand-500/10",
       info: {
         title: "Total ARR — How It's Calculated",
         content: (
@@ -45,8 +44,7 @@ export default function ProfitabilityKPICards() {
       change: "+2.1pp",
       positive: true,
       icon: TrendingUp,
-      iconColor: "#10b981",
-      bg: "bg-emerald-50",
+      gradient: "from-emerald-400 to-emerald-600",
       ringColor: "ring-emerald-500/10",
       info: {
         title: "Gross Margin — How It's Calculated",
@@ -67,8 +65,7 @@ export default function ProfitabilityKPICards() {
       value: m.mostProfitable.name,
       sub: formatCurrency(m.mostProfitable.arr, true) + " ARR",
       icon: Crown,
-      iconColor: "#f59e0b",
-      bg: "bg-amber-50",
+      gradient: "from-amber-400 to-amber-500",
       ringColor: "ring-amber-500/10",
       info: {
         title: "Most Profitable Account",
@@ -90,8 +87,7 @@ export default function ProfitabilityKPICards() {
       value: m.highestSupportBurden.name,
       sub: formatCurrency(m.highestSupportBurden.supportCost) + "/mo",
       icon: AlertTriangle,
-      iconColor: "#f97316",
-      bg: "bg-orange-50",
+      gradient: "from-orange-400 to-orange-600",
       ringColor: "ring-orange-500/10",
       info: {
         title: "Highest Support Burden",
@@ -112,8 +108,7 @@ export default function ProfitabilityKPICards() {
       value: formatCurrency(m.arrAtRisk, true),
       sub: `${m.atRiskCount} accounts`,
       icon: ShieldAlert,
-      iconColor: "#ef4444",
-      bg: "bg-red-50",
+      gradient: "from-rose-400 to-red-600",
       ringColor: "ring-red-500/10",
       info: {
         title: "Revenue at Risk — How It's Calculated",
@@ -143,8 +138,8 @@ export default function ProfitabilityKPICards() {
           className={`kpi-card group ring-1 ${card.ringColor}`}
         >
           <div className="flex items-start justify-between mb-3">
-            <div className={`w-9 h-9 rounded-xl ${card.bg} flex items-center justify-center shadow-sm`}>
-              <card.icon className="w-4.5 h-4.5" style={{ color: card.iconColor }} />
+            <div className={`w-9 h-9 rounded-xl bg-gradient-to-br ${card.gradient} flex items-center justify-center shadow-sm ring-1 ring-white/40 transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-3`}>
+              <card.icon className="w-4.5 h-4.5 text-white" />
             </div>
             <div className="flex items-center gap-1.5">
               {card.change && (

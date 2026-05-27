@@ -25,8 +25,7 @@ export default function ChurnKPICards() {
       value: m.atRiskCount.toString(),
       sub: `of ${m.totalCustomers} total`,
       icon: AlertTriangle,
-      bg: "bg-red-50",
-      iconColor: "#ef4444",
+      gradient: "from-rose-400 to-red-600",
       ringColor: "ring-red-500/10",
       info: {
         title: "Accounts at Risk — How It's Identified",
@@ -48,8 +47,7 @@ export default function ChurnKPICards() {
       value: formatCurrency(m.arrAtRisk, true),
       sub: `${((m.arrAtRisk / m.totalARR) * 100).toFixed(1)}% of total ARR`,
       icon: DollarSign,
-      bg: "bg-orange-50",
-      iconColor: "#f97316",
+      gradient: "from-orange-400 to-orange-600",
       ringColor: "ring-orange-500/10",
       info: {
         title: "ARR at Risk — Revenue Impact",
@@ -70,8 +68,7 @@ export default function ChurnKPICards() {
       value: `${avgChurnProb.toFixed(0)}%`,
       sub: "Among at-risk accounts",
       icon: TrendingDown,
-      bg: "bg-amber-50",
-      iconColor: "#f59e0b",
+      gradient: "from-amber-400 to-amber-500",
       ringColor: "ring-amber-500/10",
       info: {
         title: "Average Churn Probability",
@@ -92,8 +89,7 @@ export default function ChurnKPICards() {
       value: m.declinedEngagement.toString(),
       sub: "Accounts with >15% decline",
       icon: Activity,
-      bg: "bg-purple-50",
-      iconColor: "#8b5cf6",
+      gradient: "from-violet-400 to-purple-600",
       ringColor: "ring-purple-500/10",
       info: {
         title: "Declining Engagement — Early Warning",
@@ -114,8 +110,7 @@ export default function ChurnKPICards() {
       value: m.failedPaymentAccounts.toString(),
       sub: "Accounts with failures",
       icon: CreditCard,
-      bg: "bg-rose-50",
-      iconColor: "#e11d48",
+      gradient: "from-pink-400 to-rose-600",
       ringColor: "ring-rose-500/10",
       info: {
         title: "Failed Payments — Billing Risk",
@@ -143,8 +138,8 @@ export default function ChurnKPICards() {
           className={`kpi-card group ring-1 ${card.ringColor}`}
         >
           <div className="flex items-start justify-between mb-3">
-            <div className={`w-9 h-9 rounded-xl ${card.bg} flex items-center justify-center shadow-sm`}>
-              <card.icon className="w-4.5 h-4.5" style={{ color: card.iconColor }} />
+            <div className={`w-9 h-9 rounded-xl bg-gradient-to-br ${card.gradient} flex items-center justify-center shadow-sm ring-1 ring-white/40 transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-3`}>
+              <card.icon className="w-4.5 h-4.5 text-white" />
             </div>
             <InfoPopover title={card.info.title}>
               {card.info.content}

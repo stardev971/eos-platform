@@ -81,7 +81,7 @@ export default function ProfitabilityActionCenter() {
         className="glass-card p-5"
       >
         <div className="flex items-center gap-2 mb-4">
-          <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-brand-500 to-brand-600 flex items-center justify-center">
+          <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center shadow-sm ring-1 ring-white/40">
             <Zap className="w-3.5 h-3.5 text-white" />
           </div>
           <div>
