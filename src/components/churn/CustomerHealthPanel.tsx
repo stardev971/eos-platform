@@ -1,7 +1,14 @@
 "use client";
 
+import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { motion } from "framer-motion";
 import { Customer } from "@/lib/types";
+import CampaignLauncher from "@/components/actions/CampaignLauncher";
+import OutreachScheduler from "@/components/actions/OutreachScheduler";
+import AccountReviewCreator from "@/components/actions/AccountReviewCreator";
+import EscalationCreator from "@/components/actions/EscalationCreator";
+import NotifyAccountManager from "@/components/actions/NotifyAccountManager";
 import { formatCurrency, formatPercent, getScoreColor, getRiskColor, getRiskLabel, daysUntil, relativeTime } from "@/lib/utils";
 import {
   X,
@@ -34,6 +41,22 @@ interface Props {
 
 export default function CustomerHealthPanel({ customer: c, onClose }: Props) {
   const days = daysUntil(c.renewalDate);
+  const [retentionOpen, setRetentionOpen] = useState(false);
+  const [notifyOpen, setNotifyOpen] = useState(false);
+  const [outreachOpen, setOutreachOpen] = useState(false);
+  const [reviewOpen, setReviewOpen] = useState(false);
+  const [escalationOpen, setEscalationOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
+
+  const actions = [
+    { label: "Trigger Retention Workflow", onClick: () => setRetentionOpen(true) },
+    { label: "Notify CS Team", onClick: () => setNotifyOpen(true) },
+    { label: "Schedule Executive Outreach", onClick: () => setOutreachOpen(true) },
+    { label: "Generate Renewal Review", onClick: () => setReviewOpen(true) },
+    { label: "Create Escalation Task", onClick: () => setEscalationOpen(true) },
+  ];
 
   // AI-generated risk explanation
   const riskExplanation = c.churnRiskScore >= 75
@@ -264,20 +287,32 @@ export default function CustomerHealthPanel({ customer: c, onClose }: Props) {
         <div>
           <h4 className="text-sm font-semibold text-surface-900 mb-3">Suggested Actions</h4>
           <div className="flex flex-wrap gap-2">
-            {[
-              "Trigger Retention Workflow",
-              "Notify CS Team",
-              "Schedule Executive Outreach",
-              "Generate Renewal Review",
-              "Create Escalation Task",
-            ].map((a) => (
-              <button key={a} className="btn-secondary text-xs">
-                {a}
+            {actions.map((a) => (
+              <button key={a.label} onClick={a.onClick} className="btn-secondary text-xs">
+                {a.label}
               </button>
             ))}
           </div>
         </div>
       </div>
+
+      {/* Action Modals — portaled to body so the panel's transform doesn't trap their fixed positioning */}
+      {mounted &&
+        createPortal(
+          <>
+            <CampaignLauncher
+              open={retentionOpen}
+              onClose={() => setRetentionOpen(false)}
+              customerName={c.name}
+              context={`Retention workflow for ${c.name} — ${c.churnRiskScore}% churn risk with ${c.churnSignals.length} active signal(s).`}
+            />
+            <NotifyAccountManager open={notifyOpen} onClose={() => setNotifyOpen(false)} customerName={c.name} accountOwner={c.accountOwner} />
+            <OutreachScheduler open={outreachOpen} onClose={() => setOutreachOpen(false)} customerName={c.name} />
+            <AccountReviewCreator open={reviewOpen} onClose={() => setReviewOpen(false)} customerName={c.name} />
+            <EscalationCreator open={escalationOpen} onClose={() => setEscalationOpen(false)} customerName={c.name} riskScore={c.churnRiskScore} />
+          </>,
+          document.body
+        )}
     </motion.div>
   );
 }

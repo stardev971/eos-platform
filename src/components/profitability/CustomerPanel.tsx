@@ -1,7 +1,13 @@
 "use client";
 
+import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { motion } from "framer-motion";
 import { Customer } from "@/lib/types";
+import AccountReviewCreator from "@/components/actions/AccountReviewCreator";
+import ExportSummary from "@/components/actions/ExportSummary";
+import NotifyAccountManager from "@/components/actions/NotifyAccountManager";
+import CreateReviewTask from "@/components/actions/CreateReviewTask";
 import { formatCurrency, formatPercent, getScoreColor, getHealthLabel, daysUntil, relativeTime } from "@/lib/utils";
 import {
   X,
@@ -36,6 +42,20 @@ interface Props {
 
 export default function CustomerPanel({ customer: c, onClose }: Props) {
   const days = daysUntil(c.renewalDate);
+  const [reviewOpen, setReviewOpen] = useState(false);
+  const [exportOpen, setExportOpen] = useState(false);
+  const [notifyOpen, setNotifyOpen] = useState(false);
+  const [taskOpen, setTaskOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
+
+  const actions = [
+    { label: "Assign Account Review", onClick: () => setReviewOpen(true) },
+    { label: "Export Summary", onClick: () => setExportOpen(true) },
+    { label: "Notify Account Manager", onClick: () => setNotifyOpen(true) },
+    { label: "Create Review Task", onClick: () => setTaskOpen(true) },
+  ];
 
   return (
     <motion.div
@@ -234,14 +254,26 @@ export default function CustomerPanel({ customer: c, onClose }: Props) {
         <div>
           <h4 className="text-sm font-semibold text-surface-900 mb-3">Suggested Actions</h4>
           <div className="flex flex-wrap gap-2">
-            {["Assign Account Review", "Export Summary", "Notify Account Manager", "Create Review Task"].map((a) => (
-              <button key={a} className="btn-secondary text-xs">
-                {a}
+            {actions.map((a) => (
+              <button key={a.label} onClick={a.onClick} className="btn-secondary text-xs">
+                {a.label}
               </button>
             ))}
           </div>
         </div>
       </div>
+
+      {/* Action Modals — portaled to body so the panel's transform doesn't trap their fixed positioning */}
+      {mounted &&
+        createPortal(
+          <>
+            <AccountReviewCreator open={reviewOpen} onClose={() => setReviewOpen(false)} customerName={c.name} />
+            <ExportSummary open={exportOpen} onClose={() => setExportOpen(false)} customerName={c.name} />
+            <NotifyAccountManager open={notifyOpen} onClose={() => setNotifyOpen(false)} customerName={c.name} accountOwner={c.accountOwner} />
+            <CreateReviewTask open={taskOpen} onClose={() => setTaskOpen(false)} customerName={c.name} accountOwner={c.accountOwner} />
+          </>,
+          document.body
+        )}
     </motion.div>
   );
 }
