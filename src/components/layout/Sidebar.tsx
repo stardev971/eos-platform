@@ -48,7 +48,7 @@ export default function Sidebar() {
       {/* Logo */}
       <div className="px-4 py-4 pb-3">
         <Link href="/dashboard/profitability" className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-600 to-brand-800 flex items-center justify-center shadow-sm">
+          <div className="brand-mark w-8 h-8 rounded-lg">
             <Activity className="w-4 h-4 text-white" />
           </div>
           <div>

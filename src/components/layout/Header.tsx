@@ -127,7 +127,7 @@ export default function Header() {
             onClick={() => { setShowProfile(!showProfile); setShowNotifications(false); }}
             className="flex items-center gap-2 pl-2 pr-1.5 py-1 rounded-lg hover:bg-surface-100 transition-colors"
           >
-            <div className="w-7 h-7 rounded-full bg-gradient-to-br from-brand-600 to-brand-800 flex items-center justify-center text-white text-[10px] font-bold">
+            <div className="w-7 h-7 rounded-full bg-brand-600 flex items-center justify-center text-white text-[10px] font-bold">
               {user?.avatar || "AM"}
             </div>
             <div className="text-left hidden xl:block">

@@ -23,7 +23,7 @@ export default function ProfitabilityPage() {
         className="flex items-start justify-between gap-4 flex-wrap"
       >
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center shadow-btn-brand ring-1 ring-white/40">
+          <div className="brand-mark w-10 h-10">
             <DollarSign className="w-5 h-5 text-white" />
           </div>
           <div>

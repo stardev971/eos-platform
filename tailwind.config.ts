@@ -10,17 +10,17 @@ const config: Config = {
     extend: {
       colors: {
         brand: {
-          50: "#eff9ff",
-          100: "#dcf1ff",
-          200: "#b3e4ff",
-          300: "#6fd0ff",
-          400: "#23b8fb",
-          500: "#0ea5e9",
-          600: "#0284c7",
-          700: "#0369a1",
-          800: "#075985",
-          900: "#0c4a6e",
-          950: "#082f49",
+          50: "#eff4ff",
+          100: "#dbe6ff",
+          200: "#c0d4ff",
+          300: "#97b6ff",
+          400: "#6790fd",
+          500: "#3b6bf6",
+          600: "#2556eb",
+          700: "#1d44cf",
+          800: "#1e3ba6",
+          900: "#1e3683",
+          950: "#16224f",
         },
         surface: {
           0: "#ffffff",
@@ -50,14 +50,13 @@ const config: Config = {
         ],
       },
       boxShadow: {
-        glow: "0 0 24px rgba(14, 165, 233, 0.22)",
-        "glow-lg": "0 0 40px rgba(14, 165, 233, 0.28)",
-        card: "0 1px 3px rgba(15,23,42,0.04), 0 1px 2px rgba(15,23,42,0.04)",
+        glow: "0 0 0 4px rgba(37, 86, 235, 0.10)",
+        card: "0 1px 2px rgba(16,24,40,0.04), 0 1px 3px rgba(16,24,40,0.04)",
         "card-hover":
-          "0 12px 30px rgba(2, 132, 199, 0.10), 0 6px 12px rgba(15,23,42,0.04)",
+          "0 4px 16px rgba(16,24,40,0.06), 0 2px 6px rgba(16,24,40,0.04)",
         panel:
-          "0 24px 70px rgba(15,23,42,0.14), 0 10px 24px rgba(15,23,42,0.06)",
-        "btn-brand": "0 6px 16px rgba(2, 132, 199, 0.28)",
+          "0 24px 70px rgba(16,24,40,0.12), 0 10px 24px rgba(16,24,40,0.06)",
+        "btn-brand": "0 1px 2px rgba(16,24,40,0.10), 0 2px 6px rgba(37,86,235,0.18)",
       },
       animation: {
         "fade-in": "fadeIn 0.5s ease-out",

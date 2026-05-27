@@ -17,6 +17,22 @@ import {
   PieChart,
   Pie,
 } from "recharts";
+import type { ElementType } from "react";
+import { BarChart3, Activity, TrendingDown, PieChart as PieIcon } from "lucide-react";
+
+function ChartHeader({ icon: Icon, title, subtitle }: { icon: ElementType; title: string; subtitle?: string }) {
+  return (
+    <div className="flex items-center gap-2.5 mb-4">
+      <div className="icon-chip w-7 h-7 bg-surface-100 shrink-0">
+        <Icon className="w-3.5 h-3.5 text-surface-600" />
+      </div>
+      <div>
+        <h3 className="text-sm font-semibold text-surface-900 leading-tight">{title}</h3>
+        {subtitle && <p className="text-xs text-surface-500">{subtitle}</p>}
+      </div>
+    </div>
+  );
+}
 
 export function ProfitabilityDistribution() {
   const buckets = [
@@ -29,7 +45,7 @@ export function ProfitabilityDistribution() {
 
   return (
     <div className="glass-card p-5">
-      <h3 className="text-sm font-semibold text-surface-900 mb-4">Profitability Distribution</h3>
+      <ChartHeader icon={BarChart3} title="Profitability Distribution" />
       <div className="h-52">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={buckets} margin={{ top: 5, right: 5, left: -10, bottom: 0 }}>
@@ -62,8 +78,7 @@ export function RevenueVsSupport() {
 
   return (
     <div className="glass-card p-5">
-      <h3 className="text-sm font-semibold text-surface-900 mb-1">Revenue vs Support Load</h3>
-      <p className="text-xs text-surface-500 mb-4">Bubble size = profitability score</p>
+      <ChartHeader icon={Activity} title="Revenue vs Support Load" subtitle="Bubble size = profitability score" />
       <div className="h-52">
         <ResponsiveContainer width="100%" height="100%">
           <ScatterChart margin={{ top: 5, right: 5, left: -10, bottom: 0 }}>
@@ -125,7 +140,7 @@ export function TopLossMakers() {
 
   return (
     <div className="glass-card p-5">
-      <h3 className="text-sm font-semibold text-surface-900 mb-4">Lowest Margin Accounts</h3>
+      <ChartHeader icon={TrendingDown} title="Lowest Margin Accounts" />
       <div className="h-52">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={lossMakers} layout="vertical" margin={{ top: 0, right: 10, left: 0, bottom: 0 }}>
@@ -158,7 +173,7 @@ export function SegmentBreakdown() {
 
   return (
     <div className="glass-card p-5">
-      <h3 className="text-sm font-semibold text-surface-900 mb-4">ARR by Segment</h3>
+      <ChartHeader icon={PieIcon} title="ARR by Segment" />
       <div className="flex items-center gap-6">
         <div className="w-40 h-40">
           <ResponsiveContainer width="100%" height="100%">

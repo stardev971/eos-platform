@@ -144,7 +144,7 @@ export default function ProfitabilityTable() {
                 >
                   <td className="table-cell">
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-100 to-brand-200 flex items-center justify-center text-brand-700 text-xs font-bold shrink-0">
+                      <div className="w-8 h-8 rounded-lg bg-brand-50 ring-1 ring-brand-100 flex items-center justify-center text-brand-700 text-xs font-bold shrink-0">
                         {c.logo}
                       </div>
                       <div>
@@ -189,11 +189,16 @@ export default function ProfitabilityTable() {
                     </div>
                   </td>
                   <td className="table-cell">
-                    <span className={`badge ring-1 ${
+                    <span className={`badge gap-1.5 ring-1 ${
                       c.healthScore >= 80 ? "badge-success" :
                       c.healthScore >= 60 ? "badge-warning" :
                       "badge-danger"
                     }`}>
+                      <span className={`w-1.5 h-1.5 rounded-full ${
+                        c.healthScore >= 80 ? "bg-emerald-500" :
+                        c.healthScore >= 60 ? "bg-amber-500" :
+                        "bg-red-500"
+                      }`} />
                       {getHealthLabel(c.healthScore)}
                     </span>
                   </td>

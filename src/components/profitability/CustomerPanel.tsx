@@ -49,7 +49,7 @@ export default function CustomerPanel({ customer: c, onClose }: Props) {
       <div className="sticky top-0 bg-white/90 backdrop-blur-xl border-b border-surface-200 px-6 py-4 z-10">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-100 to-brand-200 flex items-center justify-center text-brand-700 font-bold text-sm">
+            <div className="w-10 h-10 rounded-xl bg-brand-50 ring-1 ring-brand-100 flex items-center justify-center text-brand-700 font-bold text-sm">
               {c.logo}
             </div>
             <div>

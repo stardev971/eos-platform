@@ -10,6 +10,8 @@ import {
   Crown,
   AlertTriangle,
   ShieldAlert,
+  ArrowUpRight,
+  ArrowDownRight,
 } from "lucide-react";
 
 export default function ProfitabilityKPICards() {
@@ -22,8 +24,8 @@ export default function ProfitabilityKPICards() {
       change: "+12.4%",
       positive: true,
       icon: DollarSign,
-      gradient: "from-brand-400 to-brand-600",
-      ringColor: "ring-brand-500/10",
+      iconBg: "bg-brand-50",
+      iconColor: "text-brand-600",
       info: {
         title: "Total ARR — How It's Calculated",
         content: (
@@ -44,8 +46,8 @@ export default function ProfitabilityKPICards() {
       change: "+2.1pp",
       positive: true,
       icon: TrendingUp,
-      gradient: "from-emerald-400 to-emerald-600",
-      ringColor: "ring-emerald-500/10",
+      iconBg: "bg-emerald-50",
+      iconColor: "text-emerald-600",
       info: {
         title: "Gross Margin — How It's Calculated",
         content: (
@@ -65,8 +67,8 @@ export default function ProfitabilityKPICards() {
       value: m.mostProfitable.name,
       sub: formatCurrency(m.mostProfitable.arr, true) + " ARR",
       icon: Crown,
-      gradient: "from-amber-400 to-amber-500",
-      ringColor: "ring-amber-500/10",
+      iconBg: "bg-amber-50",
+      iconColor: "text-amber-600",
       info: {
         title: "Most Profitable Account",
         content: (
@@ -87,8 +89,8 @@ export default function ProfitabilityKPICards() {
       value: m.highestSupportBurden.name,
       sub: formatCurrency(m.highestSupportBurden.supportCost) + "/mo",
       icon: AlertTriangle,
-      gradient: "from-orange-400 to-orange-600",
-      ringColor: "ring-orange-500/10",
+      iconBg: "bg-orange-50",
+      iconColor: "text-orange-600",
       info: {
         title: "Highest Support Burden",
         content: (
@@ -108,8 +110,8 @@ export default function ProfitabilityKPICards() {
       value: formatCurrency(m.arrAtRisk, true),
       sub: `${m.atRiskCount} accounts`,
       icon: ShieldAlert,
-      gradient: "from-rose-400 to-red-600",
-      ringColor: "ring-red-500/10",
+      iconBg: "bg-red-50",
+      iconColor: "text-red-600",
       info: {
         title: "Revenue at Risk — How It's Calculated",
         content: (
@@ -135,26 +137,29 @@ export default function ProfitabilityKPICards() {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: i * 0.05, duration: 0.3 }}
-          className={`kpi-card group ring-1 ${card.ringColor}`}
+          className="kpi-card group"
         >
-          <div className="flex items-start justify-between mb-3">
-            <div className={`w-9 h-9 rounded-xl bg-gradient-to-br ${card.gradient} flex items-center justify-center shadow-sm ring-1 ring-white/40 transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-3`}>
-              <card.icon className="w-4.5 h-4.5 text-white" />
+          <div className="flex items-center justify-between mb-3.5">
+            <div className="flex items-center gap-2.5 min-w-0">
+              <div className={`icon-chip w-8 h-8 ${card.iconBg} shrink-0`}>
+                <card.icon className={`w-4 h-4 ${card.iconColor}`} />
+              </div>
+              <span className="text-[13px] font-medium text-surface-600 truncate">{card.label}</span>
             </div>
-            <div className="flex items-center gap-1.5">
-              {card.change && (
-                <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${card.positive ? "bg-emerald-50 text-emerald-600" : "bg-red-50 text-red-600"}`}>
-                  {card.change}
-                </span>
-              )}
-              <InfoPopover title={card.info.title}>
-                {card.info.content}
-              </InfoPopover>
-            </div>
+            <InfoPopover title={card.info.title}>
+              {card.info.content}
+            </InfoPopover>
           </div>
-          <div className="text-[11px] font-semibold text-surface-500 uppercase tracking-wider mb-1">{card.label}</div>
-          <div className="text-lg font-bold text-surface-900 truncate">{card.value}</div>
-          {card.sub && <div className="text-xs text-surface-500 mt-0.5">{card.sub}</div>}
+          <div className="flex items-baseline gap-2 flex-wrap">
+            <div className="text-xl font-bold text-surface-900 nums truncate">{card.value}</div>
+            {card.change && (
+              <span className={`trend ${card.positive ? "text-emerald-600" : "text-red-600"}`}>
+                {card.positive ? <ArrowUpRight className="w-3.5 h-3.5" /> : <ArrowDownRight className="w-3.5 h-3.5" />}
+                {card.change}
+              </span>
+            )}
+          </div>
+          {card.sub && <div className="text-xs text-surface-500 mt-1">{card.sub}</div>}
         </motion.div>
       ))}
     </div>

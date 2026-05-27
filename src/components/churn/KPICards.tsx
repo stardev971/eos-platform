@@ -25,8 +25,8 @@ export default function ChurnKPICards() {
       value: m.atRiskCount.toString(),
       sub: `of ${m.totalCustomers} total`,
       icon: AlertTriangle,
-      gradient: "from-rose-400 to-red-600",
-      ringColor: "ring-red-500/10",
+      iconBg: "bg-red-50",
+      iconColor: "text-red-600",
       info: {
         title: "Accounts at Risk — How It's Identified",
         content: (
@@ -47,8 +47,8 @@ export default function ChurnKPICards() {
       value: formatCurrency(m.arrAtRisk, true),
       sub: `${((m.arrAtRisk / m.totalARR) * 100).toFixed(1)}% of total ARR`,
       icon: DollarSign,
-      gradient: "from-orange-400 to-orange-600",
-      ringColor: "ring-orange-500/10",
+      iconBg: "bg-orange-50",
+      iconColor: "text-orange-600",
       info: {
         title: "ARR at Risk — Revenue Impact",
         content: (
@@ -68,8 +68,8 @@ export default function ChurnKPICards() {
       value: `${avgChurnProb.toFixed(0)}%`,
       sub: "Among at-risk accounts",
       icon: TrendingDown,
-      gradient: "from-amber-400 to-amber-500",
-      ringColor: "ring-amber-500/10",
+      iconBg: "bg-amber-50",
+      iconColor: "text-amber-600",
       info: {
         title: "Average Churn Probability",
         content: (
@@ -89,8 +89,8 @@ export default function ChurnKPICards() {
       value: m.declinedEngagement.toString(),
       sub: "Accounts with >15% decline",
       icon: Activity,
-      gradient: "from-violet-400 to-purple-600",
-      ringColor: "ring-purple-500/10",
+      iconBg: "bg-violet-50",
+      iconColor: "text-violet-600",
       info: {
         title: "Declining Engagement — Early Warning",
         content: (
@@ -110,8 +110,8 @@ export default function ChurnKPICards() {
       value: m.failedPaymentAccounts.toString(),
       sub: "Accounts with failures",
       icon: CreditCard,
-      gradient: "from-pink-400 to-rose-600",
-      ringColor: "ring-rose-500/10",
+      iconBg: "bg-rose-50",
+      iconColor: "text-rose-600",
       info: {
         title: "Failed Payments — Billing Risk",
         content: (
@@ -135,19 +135,21 @@ export default function ChurnKPICards() {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: i * 0.05, duration: 0.3 }}
-          className={`kpi-card group ring-1 ${card.ringColor}`}
+          className="kpi-card group"
         >
-          <div className="flex items-start justify-between mb-3">
-            <div className={`w-9 h-9 rounded-xl bg-gradient-to-br ${card.gradient} flex items-center justify-center shadow-sm ring-1 ring-white/40 transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-3`}>
-              <card.icon className="w-4.5 h-4.5 text-white" />
+          <div className="flex items-center justify-between mb-3.5">
+            <div className="flex items-center gap-2.5 min-w-0">
+              <div className={`icon-chip w-8 h-8 ${card.iconBg} shrink-0`}>
+                <card.icon className={`w-4 h-4 ${card.iconColor}`} />
+              </div>
+              <span className="text-[13px] font-medium text-surface-600 truncate">{card.label}</span>
             </div>
             <InfoPopover title={card.info.title}>
               {card.info.content}
             </InfoPopover>
           </div>
-          <div className="text-[11px] font-semibold text-surface-500 uppercase tracking-wider mb-1">{card.label}</div>
-          <div className="text-xl font-bold text-surface-900">{card.value}</div>
-          {card.sub && <div className="text-xs text-surface-500 mt-0.5">{card.sub}</div>}
+          <div className="text-xl font-bold text-surface-900 nums">{card.value}</div>
+          {card.sub && <div className="text-xs text-surface-500 mt-1">{card.sub}</div>}
         </motion.div>
       ))}
     </div>

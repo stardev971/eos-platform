@@ -15,7 +15,13 @@
     -moz-osx-font-smoothing: grayscale;
   }
   h1, h2, h3, h4, h5, h6 {
-    letter-spacing: -0.025em;
+    letter-spacing: -0.02em;
+  }
+  /* Tabular, lining figures for all numeric displays — gives the mature,
+     aligned look of the reference dashboards. */
+  .nums, table {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum", "cv02", "cv03", "cv04";
   }
 }
 
@@ -24,10 +30,10 @@
     @apply bg-white/80 backdrop-blur-xl border border-white/30 shadow-sm;
   }
   .glass-card {
-    @apply bg-white border border-surface-200/80 rounded-2xl shadow-card transition-all duration-300 ease-out;
+    @apply bg-white border border-surface-200 rounded-2xl shadow-card transition-shadow duration-200 ease-out;
   }
   .glass-card:hover {
-    @apply shadow-card-hover border-brand-200/70 -translate-y-0.5;
+    @apply shadow-card-hover;
   }
   .kpi-card {
     @apply glass-card p-5 relative;
@@ -40,14 +46,19 @@
     @apply opacity-100;
   }
   .gradient-text {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-brand-600 to-brand-400;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-brand-600 to-brand-500;
   }
-  /* Reusable gradient icon tile — colorful, lively accent for headers/cards */
-  .icon-tile {
-    @apply flex items-center justify-center rounded-xl text-white shadow-sm ring-1 ring-white/40;
+  /* Flat brand logo tile — solid, clean, like the reference app marks */
+  .brand-mark {
+    @apply flex items-center justify-center rounded-xl bg-brand-600 text-white shadow-sm;
   }
-  .icon-tile-brand {
-    @apply icon-tile bg-gradient-to-br from-brand-400 to-brand-600;
+  /* Subtle tinted icon chip used on cards/section headers */
+  .icon-chip {
+    @apply flex items-center justify-center rounded-lg;
+  }
+  /* Inline trend indicator (pair with text-emerald-600 / text-red-600) */
+  .trend {
+    @apply inline-flex items-center gap-0.5 text-xs font-semibold;
   }
   .sidebar-link {
     @apply flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 text-surface-600 hover:text-surface-900 hover:bg-surface-100;
@@ -77,10 +88,10 @@
     @apply w-full px-4 py-3 rounded-xl border border-surface-200 bg-white text-surface-900 placeholder:text-surface-400 focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-all duration-200 text-sm;
   }
   .btn-primary {
-    @apply px-6 py-3 bg-gradient-to-br from-brand-500 to-brand-600 text-white rounded-xl font-semibold hover:from-brand-400 hover:to-brand-600 active:from-brand-600 active:to-brand-700 transition-all duration-200 shadow-btn-brand hover:shadow-glow hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none disabled:hover:translate-y-0;
+    @apply px-5 py-2.5 bg-brand-600 text-white rounded-lg font-semibold hover:bg-brand-700 active:bg-brand-800 transition-colors duration-150 shadow-btn-brand disabled:opacity-50 disabled:cursor-not-allowed;
   }
   .btn-secondary {
-    @apply px-4 py-2.5 bg-white text-surface-700 rounded-xl font-medium border border-surface-200 hover:bg-surface-50 hover:border-surface-300 transition-all duration-200 shadow-sm;
+    @apply px-4 py-2.5 bg-white text-surface-700 rounded-lg font-medium border border-surface-200 hover:bg-surface-50 hover:border-surface-300 transition-colors duration-150 shadow-sm;
   }
   .table-header {
     @apply text-[11px] font-semibold text-surface-500 uppercase tracking-wider;
@@ -127,11 +138,11 @@
 
 /* Subtle selection color */
 ::selection {
-  background-color: rgba(14, 165, 233, 0.18);
+  background-color: rgba(37, 86, 235, 0.16);
   color: inherit;
 }
 
 /* Brand-tinted scrollbar thumb on hover for a more cohesive feel */
 ::-webkit-scrollbar-thumb:hover {
-  background: #7dd3fc;
+  background: #97b6ff;
 }
