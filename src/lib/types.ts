@@ -140,3 +140,63 @@ export interface AIUsageSummary {
   tokensByCategory: { category: string; tokens: number; cost: number }[];
   dailyUsage: { date: string; tokens: number; cost: number; requests: number }[];
 }
+
+// ─── Team Efficiency Types ──────────────────────────────────────────
+export type TeamName = "Sales" | "Customer Success" | "Support" | "Engineering";
+
+export interface TeamMember {
+  id: string;
+  name: string;
+  role: string;
+  team: TeamName;
+  avatar: string;
+  email: string;
+  status: "available" | "busy" | "overloaded";
+  accountsManaged: number;
+  arrManaged: number;
+  avgHealthScore: number;
+  utilization: number; // % capacity used
+  // Role-specific (optional)
+  ticketsResolved?: number;
+  avgResponseHours?: number;
+  csat?: number;
+  slaCompliance?: number;
+  sprintVelocity?: number;
+  bugsResolved?: number;
+  dealsWon?: number;
+  quotaAttainment?: number;
+  renewalsSecured?: number;
+  expansionArr?: number;
+  monthlyOutput: { month: string; value: number }[];
+}
+
+// ─── Revenue Operations Types ───────────────────────────────────────
+export interface PipelineDeal {
+  id: string;
+  customer: string;
+  logo: string;
+  type: "New Business" | "Expansion" | "Renewal" | "Upsell";
+  stage: "Discovery" | "Proposal" | "Negotiation" | "Closing" | "Closed Won";
+  value: number;
+  probability: number;
+  owner: string;
+  closeDate: string;
+  source: string;
+}
+
+// ─── AI Recommendation Types ────────────────────────────────────────
+export interface Recommendation {
+  id: string;
+  title: string;
+  description: string;
+  category: "Revenue" | "Retention" | "Cost" | "Efficiency" | "Growth";
+  priority: "critical" | "high" | "medium" | "low";
+  customer?: string;
+  impact: string;
+  impactValue: number;
+  confidence: number;
+  effort: "Low" | "Medium" | "High";
+  sources: string[];
+  actionType: "campaign" | "escalation" | "outreach" | "review";
+  rationale: string[];
+}

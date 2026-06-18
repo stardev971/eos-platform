@@ -1,4 +1,4 @@
-import { Customer, AIInsight, Notification, AIModelUsage, AIUsageSummary } from "./types";
+import { Customer, AIInsight, Notification, AIModelUsage, AIUsageSummary, TeamMember, PipelineDeal, Recommendation } from "./types";
 
 const months = ["Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun"];
 
@@ -1770,7 +1770,7 @@ export const aiModelUsage: AIModelUsage[] = [
   },
   {
     id: "ai-m-9",
-    model: "EOS Scoring v2",
+    model: "SaaS OS Scoring v2",
     provider: "Internal",
     useCase: "Health Score Computation",
     category: "Churn Prediction",
@@ -1850,5 +1850,359 @@ export function getAIUsageSummary(): AIUsageSummary {
     costTrend: -8.3, // 8.3% decrease vs prior month (positive signal)
     tokensByCategory,
     dailyUsage,
+  };
+}
+
+// ─── Executive Overview Metrics ─────────────────────────────────────
+export function getExecutiveMetrics() {
+  const base = getAggregateMetrics();
+  const healthy = customers.filter((c) => c.healthScore >= 80).length;
+  const needsAttention = customers.filter((c) => c.healthScore >= 60 && c.healthScore < 80).length;
+  const atRisk = customers.filter((c) => c.healthScore < 60).length;
+  const avgCsat = customers.reduce((s, c) => s + c.csatScore, 0) / customers.length;
+  const avgEngagement = customers.reduce((s, c) => s + c.engagementScore, 0) / customers.length;
+  // Net Revenue Retention proxy from upgrades/downgrades
+  const expansion = customers.reduce((s, c) => s + c.upgrades * 18000, 0);
+  const contraction = customers.reduce((s, c) => s + c.downgrades * 14000, 0);
+  const churned = customers.filter((c) => c.lifecycleStage === "Churning").reduce((s, c) => s + c.arr, 0);
+  const nrr = ((base.totalARR + expansion - contraction - churned) / base.totalARR) * 100;
+  const topAccounts = [...customers].sort((a, b) => b.arr - a.arr).slice(0, 5);
+  // Portfolio ARR trend (sum of monthly revenue across all customers, annualized)
+  const portfolioTrend = months.map((month, i) => {
+    const monthRevenue = customers.reduce((s, c) => s + (c.monthlyTrend[i]?.revenue || c.mrr), 0);
+    return { month, arr: Math.round(monthRevenue * 12), mrr: Math.round(monthRevenue) };
+  });
+  return {
+    ...base,
+    healthy,
+    needsAttention,
+    atRisk,
+    avgCsat,
+    avgEngagement,
+    nrr,
+    npsScore: 48,
+    topAccounts,
+    portfolioTrend,
+    expansion,
+    contraction,
+  };
+}
+
+// Aggregated recent activity across the portfolio for the executive feed
+export function getPortfolioActivity() {
+  const items = customers.flatMap((c) =>
+    c.recentActivity.map((a) => ({ ...a, customer: c.name, logo: c.logo }))
+  );
+  return items.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, 12);
+}
+
+// ─── Revenue Operations Data ────────────────────────────────────────
+export const pipelineDeals: PipelineDeal[] = [
+  { id: "deal-1", customer: "CloudScale AI", logo: "CA", type: "Expansion", stage: "Negotiation", value: 110000, probability: 80, owner: "Sarah Chen", closeDate: "2026-07-10", source: "HubSpot" },
+  { id: "deal-2", customer: "Meridian Health Systems", logo: "MH", type: "Renewal", stage: "Closing", value: 1100000, probability: 90, owner: "Sarah Chen", closeDate: "2026-07-01", source: "HubSpot" },
+  { id: "deal-3", customer: "Apex Retail Group", logo: "AR", type: "Upsell", stage: "Proposal", value: 140000, probability: 60, owner: "Marcus Rivera", closeDate: "2026-08-15", source: "HubSpot" },
+  { id: "deal-4", customer: "Nexus Telecom", logo: "NX", type: "Expansion", stage: "Discovery", value: 95000, probability: 35, owner: "Marcus Rivera", closeDate: "2026-09-05", source: "HubSpot" },
+  { id: "deal-5", customer: "Beacon Financial", logo: "BF", type: "Upsell", stage: "Proposal", value: 48000, probability: 55, owner: "Marcus Rivera", closeDate: "2026-08-20", source: "HubSpot" },
+  { id: "deal-6", customer: "Atlas Logistics Pro", logo: "AL", type: "Renewal", stage: "Negotiation", value: 560000, probability: 75, owner: "Sarah Chen", closeDate: "2026-07-25", source: "HubSpot" },
+  { id: "deal-7", customer: "Horizon Payments", logo: "HP", type: "Expansion", stage: "Closing", value: 60000, probability: 85, owner: "Sarah Chen", closeDate: "2026-07-08", source: "HubSpot" },
+  { id: "deal-8", customer: "Catalyst Commerce", logo: "CC", type: "Upsell", stage: "Discovery", value: 36000, probability: 30, owner: "James Park", closeDate: "2026-09-18", source: "HubSpot" },
+  { id: "deal-9", customer: "Vanguard Security", logo: "VS", type: "Expansion", stage: "Proposal", value: 42000, probability: 50, owner: "James Park", closeDate: "2026-08-12", source: "HubSpot" },
+  { id: "deal-10", customer: "Forge Manufacturing", logo: "FM", type: "Renewal", stage: "Negotiation", value: 450000, probability: 70, owner: "Sarah Chen", closeDate: "2026-08-01", source: "HubSpot" },
+  { id: "deal-11", customer: "TechFlow (New)", logo: "TF", type: "New Business", stage: "Proposal", value: 180000, probability: 45, owner: "James Park", closeDate: "2026-09-30", source: "HubSpot" },
+  { id: "deal-12", customer: "BrightPath (New)", logo: "BP", type: "New Business", stage: "Discovery", value: 90000, probability: 25, owner: "James Park", closeDate: "2026-10-15", source: "HubSpot" },
+];
+
+export function getRevenueMetrics() {
+  const totalARR = customers.reduce((s, c) => s + c.arr, 0);
+  const totalMRR = customers.reduce((s, c) => s + c.mrr, 0);
+  const newMrr = 42000;
+  const expansionMrr = customers.reduce((s, c) => s + c.upgrades * 1500, 0);
+  const contractionMrr = customers.reduce((s, c) => s + c.downgrades * 1200, 0);
+  const churnedMrr = customers.filter((c) => c.lifecycleStage === "Churning").reduce((s, c) => s + c.mrr, 0);
+  const startMrr = totalMRR - newMrr - expansionMrr + contractionMrr + churnedMrr;
+  const nrr = ((startMrr + expansionMrr - contractionMrr - churnedMrr) / startMrr) * 100;
+  const grr = ((startMrr - contractionMrr - churnedMrr) / startMrr) * 100;
+
+  const openDeals = pipelineDeals.filter((d) => d.stage !== "Closed Won");
+  const totalPipeline = openDeals.reduce((s, d) => s + d.value, 0);
+  const weightedPipeline = openDeals.reduce((s, d) => s + d.value * (d.probability / 100), 0);
+
+  // Upcoming renewals in next 120 days
+  const now = new Date("2026-06-18");
+  const upcomingRenewals = [...customers]
+    .filter((c) => {
+      const d = new Date(c.renewalDate);
+      const diff = (d.getTime() - now.getTime()) / 86400000;
+      return diff >= 0 && diff <= 120;
+    })
+    .sort((a, b) => new Date(a.renewalDate).getTime() - new Date(b.renewalDate).getTime());
+  const renewalsValue = upcomingRenewals.reduce((s, c) => s + c.renewalValue, 0);
+  const renewalsAtRisk = upcomingRenewals.filter((c) => c.churnRiskScore >= 50).reduce((s, c) => s + c.renewalValue, 0);
+
+  const failedPaymentAccounts = customers.filter((c) => c.failedPayments > 0);
+  const revenueInDunning = failedPaymentAccounts.reduce((s, c) => s + c.mrr, 0);
+
+  // MRR movement trend (last 12 months) — simulated waterfall components
+  const mrrTrend = months.map((month, i) => {
+    const growth = 1 + i * 0.012;
+    return {
+      month,
+      mrr: Math.round(startMrr * growth),
+      new: Math.round(8000 + Math.random() * 6000),
+      expansion: Math.round(4000 + Math.random() * 4000),
+      churn: -Math.round(2000 + Math.random() * 3000),
+    };
+  });
+
+  return {
+    totalARR,
+    totalMRR,
+    newMrr,
+    expansionMrr,
+    contractionMrr,
+    churnedMrr,
+    nrr,
+    grr,
+    totalPipeline,
+    weightedPipeline,
+    openDealCount: openDeals.length,
+    upcomingRenewals,
+    renewalsValue,
+    renewalsAtRisk,
+    failedPaymentAccounts,
+    revenueInDunning,
+    mrrTrend,
+    quarterlyForecast: Math.round(totalMRR * 3 + weightedPipeline * 0.4),
+  };
+}
+
+// ─── Team Efficiency Data ───────────────────────────────────────────
+function ownerStats(owner: string) {
+  const book = customers.filter((c) => c.accountOwner === owner);
+  const count = book.length || 1;
+  return {
+    accountsManaged: book.length,
+    arrManaged: book.reduce((s, c) => s + c.arr, 0),
+    avgHealthScore: Math.round(book.reduce((s, c) => s + c.healthScore, 0) / count),
+    renewalsSecured: book.filter((c) => c.lifecycleStage === "Active").length,
+    expansionArr: book.reduce((s, c) => s + c.upgrades * 18000, 0),
+  };
+}
+
+const outputTrend = (base: number, growth = true) =>
+  months.map((month, i) => ({
+    month,
+    value: Math.round(base * (0.85 + Math.random() * 0.25 + (growth ? i * 0.01 : 0))),
+  }));
+
+const sc = ownerStats("Sarah Chen");
+const mr = ownerStats("Marcus Rivera");
+const jp = ownerStats("James Park");
+
+export const teamMembers: TeamMember[] = [
+  {
+    id: "tm-1", name: "Sarah Chen", role: "Enterprise CSM", team: "Customer Success", avatar: "SC",
+    email: "sarah.chen@saasco.com", status: "busy",
+    accountsManaged: sc.accountsManaged, arrManaged: sc.arrManaged, avgHealthScore: sc.avgHealthScore,
+    utilization: 88, renewalsSecured: sc.renewalsSecured, expansionArr: sc.expansionArr, csat: 92,
+    monthlyOutput: outputTrend(sc.arrManaged / 1000),
+  },
+  {
+    id: "tm-2", name: "Marcus Rivera", role: "Customer Success Manager", team: "Customer Success", avatar: "MR",
+    email: "marcus.rivera@saasco.com", status: "overloaded",
+    accountsManaged: mr.accountsManaged, arrManaged: mr.arrManaged, avgHealthScore: mr.avgHealthScore,
+    utilization: 96, renewalsSecured: mr.renewalsSecured, expansionArr: mr.expansionArr, csat: 79,
+    monthlyOutput: outputTrend(mr.arrManaged / 1000),
+  },
+  {
+    id: "tm-3", name: "James Park", role: "SMB Account Executive", team: "Sales", avatar: "JP",
+    email: "james.park@saasco.com", status: "available",
+    accountsManaged: jp.accountsManaged, arrManaged: jp.arrManaged, avgHealthScore: jp.avgHealthScore,
+    utilization: 72, dealsWon: 9, quotaAttainment: 84, expansionArr: jp.expansionArr,
+    monthlyOutput: outputTrend(jp.arrManaged / 1000),
+  },
+  {
+    id: "tm-4", name: "Priya Patel", role: "Enterprise Account Executive", team: "Sales", avatar: "PP",
+    email: "priya.patel@saasco.com", status: "busy",
+    accountsManaged: 6, arrManaged: 1480000, avgHealthScore: 81, utilization: 90,
+    dealsWon: 14, quotaAttainment: 118, expansionArr: 220000,
+    monthlyOutput: outputTrend(124, true),
+  },
+  {
+    id: "tm-5", name: "Daniel Okafor", role: "Support Team Lead", team: "Support", avatar: "DO",
+    email: "daniel.okafor@saasco.com", status: "busy",
+    accountsManaged: 0, arrManaged: 0, avgHealthScore: 0, utilization: 84,
+    ticketsResolved: 342, avgResponseHours: 1.8, csat: 88, slaCompliance: 94,
+    monthlyOutput: outputTrend(320, true),
+  },
+  {
+    id: "tm-6", name: "Emily Zhang", role: "Senior Support Engineer", team: "Support", avatar: "EZ",
+    email: "emily.zhang@saasco.com", status: "overloaded",
+    accountsManaged: 0, arrManaged: 0, avgHealthScore: 0, utilization: 97,
+    ticketsResolved: 418, avgResponseHours: 2.4, csat: 83, slaCompliance: 89,
+    monthlyOutput: outputTrend(400, true),
+  },
+  {
+    id: "tm-7", name: "Tom Becker", role: "Engineering Lead", team: "Engineering", avatar: "TB",
+    email: "tom.becker@saasco.com", status: "busy",
+    accountsManaged: 0, arrManaged: 0, avgHealthScore: 0, utilization: 86,
+    sprintVelocity: 42, bugsResolved: 96,
+    monthlyOutput: outputTrend(40, true),
+  },
+  {
+    id: "tm-8", name: "Aisha Khan", role: "Solutions Engineer", team: "Engineering", avatar: "AK",
+    email: "aisha.khan@saasco.com", status: "available",
+    accountsManaged: 0, arrManaged: 0, avgHealthScore: 0, utilization: 68,
+    sprintVelocity: 36, bugsResolved: 74,
+    monthlyOutput: outputTrend(34, true),
+  },
+];
+
+export function getTeamSummary() {
+  const teams: TeamMember["team"][] = ["Sales", "Customer Success", "Support", "Engineering"];
+  const byTeam = teams.map((team) => {
+    const members = teamMembers.filter((m) => m.team === team);
+    const count = members.length || 1;
+    return {
+      team,
+      headcount: members.length,
+      avgUtilization: Math.round(members.reduce((s, m) => s + m.utilization, 0) / count),
+      arrManaged: members.reduce((s, m) => s + m.arrManaged, 0),
+      accountsManaged: members.reduce((s, m) => s + m.accountsManaged, 0),
+    };
+  });
+  const avgUtilization = Math.round(teamMembers.reduce((s, m) => s + m.utilization, 0) / teamMembers.length);
+  const overloaded = teamMembers.filter((m) => m.status === "overloaded").length;
+  const totalTicketsResolved = teamMembers.reduce((s, m) => s + (m.ticketsResolved || 0), 0);
+  const avgCsat = Math.round(
+    teamMembers.filter((m) => m.csat).reduce((s, m) => s + (m.csat || 0), 0) /
+      teamMembers.filter((m) => m.csat).length
+  );
+  return { byTeam, avgUtilization, overloaded, headcount: teamMembers.length, totalTicketsResolved, avgCsat };
+}
+
+// Customers belonging to a given team member's book of business
+export function getMemberBook(name: string): Customer[] {
+  return customers.filter((c) => c.accountOwner === name).sort((a, b) => b.arr - a.arr);
+}
+
+// ─── AI Recommendations Data ────────────────────────────────────────
+export const recommendations: Recommendation[] = [
+  {
+    id: "rec-1",
+    title: "Launch executive save play for Vertex Analytics",
+    description: "Vertex Analytics has requested cancellation info with 4 failed payments and 93% usage decline. A leadership-led save play within 7 days is the highest-leverage retention action this week.",
+    category: "Retention", priority: "critical", customer: "Vertex Analytics",
+    impact: "$24K ARR", impactValue: 24000, confidence: 91, effort: "Medium",
+    sources: ["Zendesk", "Stripe", "Mixpanel"], actionType: "escalation",
+    rationale: [
+      "Cancellation information requested via Zendesk (May 22)",
+      "4 consecutive failed payments in Stripe",
+      "Only 3 of 45 seats active — 93% engagement drop",
+    ],
+  },
+  {
+    id: "rec-2",
+    title: "Close $110K expansion at CloudScale AI",
+    description: "CloudScale AI shows the portfolio's highest engagement (95) and margin (86%). A $110K expansion is already in pipeline at 80% probability — prioritize an executive outreach to accelerate close.",
+    category: "Growth", priority: "high", customer: "CloudScale AI",
+    impact: "$110K ARR", impactValue: 110000, confidence: 87, effort: "Low",
+    sources: ["HubSpot", "Mixpanel"], actionType: "outreach",
+    rationale: [
+      "Expansion deal in Negotiation stage (80% probability)",
+      "Highest engagement score in portfolio (95)",
+      "4 product upgrades in trailing 12 months",
+    ],
+  },
+  {
+    id: "rec-3",
+    title: "Escalate NovaTech Solutions champion departure",
+    description: "NovaTech's primary champion left the company while usage dropped 48% and payments failed twice. Combined churn probability is 82% against $360K ARR — assign a recovery owner immediately.",
+    category: "Retention", priority: "critical", customer: "NovaTech Solutions",
+    impact: "$360K ARR", impactValue: 360000, confidence: 84, effort: "High",
+    sources: ["HubSpot", "Mixpanel", "Stripe"], actionType: "escalation",
+    rationale: [
+      "Champion contact departed (HubSpot, May 20)",
+      "Feature adoption declined 48% in 30 days",
+      "2 consecutive failed payments before renewal",
+    ],
+  },
+  {
+    id: "rec-4",
+    title: "Re-engage Orbital Dynamics before renewal",
+    description: "Orbital Dynamics has 3 failed payments and a 64% active-user decline with renewal in ~27 days. A win-back campaign plus billing recovery can protect $144K ARR.",
+    category: "Retention", priority: "high", customer: "Orbital Dynamics",
+    impact: "$144K ARR", impactValue: 144000, confidence: 78, effort: "Medium",
+    sources: ["Stripe", "Mixpanel", "Zendesk"], actionType: "campaign",
+    rationale: [
+      "3 consecutive failed payments in Stripe",
+      "Active users down 64% (Mixpanel)",
+      "Renewal date within 30 days",
+    ],
+  },
+  {
+    id: "rec-5",
+    title: "Reduce support burden on NovaTech & Orbital",
+    description: "Two accounts consume 38% above-average support resources at negative margin. Routing recurring bug tickets to a dedicated Jira swimlane could recover ~$18K/mo in operational cost.",
+    category: "Cost", priority: "high", customer: "NovaTech Solutions",
+    impact: "$18K/mo cost", impactValue: 216000, confidence: 73, effort: "Medium",
+    sources: ["Zendesk", "Jira"], actionType: "review",
+    rationale: [
+      "Support cost exceeds MRR on both accounts",
+      "18 open bugs driving repeat tickets",
+      "5 escalations to engineering this quarter",
+    ],
+  },
+  {
+    id: "rec-6",
+    title: "Upsell Apex Retail Group on usage expansion",
+    description: "Apex Retail rolled out to 3 new departments with 80% feature adoption. A $140K upsell is in Proposal stage — package an ROI showcase to move it to close.",
+    category: "Revenue", priority: "medium", customer: "Apex Retail Group",
+    impact: "$140K ARR", impactValue: 140000, confidence: 69, effort: "Low",
+    sources: ["HubSpot", "Mixpanel"], actionType: "campaign",
+    rationale: [
+      "Upsell deal in Proposal stage ($140K)",
+      "Rolled out to 3 new departments (May 23)",
+      "Feature adoption at 80% and rising",
+    ],
+  },
+  {
+    id: "rec-7",
+    title: "Rebalance Marcus Rivera's overloaded book",
+    description: "Marcus Rivera is at 96% utilization managing the lowest-health book in Customer Success. Redistributing 2 at-risk accounts could lift portfolio health and protect renewals.",
+    category: "Efficiency", priority: "medium",
+    impact: "Team capacity", impactValue: 0, confidence: 65, effort: "Low",
+    sources: ["Internal"], actionType: "review",
+    rationale: [
+      "96% utilization — flagged overloaded",
+      "Manages multiple at-risk accounts (NovaTech, TerraVolt, Pulse)",
+      "CSAT trailing team average",
+    ],
+  },
+  {
+    id: "rec-8",
+    title: "Accelerate Nimbus Education onboarding",
+    description: "Nimbus Education shows below-average adoption during onboarding. Early intervention with a guided activation plan reduces first-year churn risk on this new account.",
+    category: "Retention", priority: "low", customer: "Nimbus Education",
+    impact: "$18K ARR", impactValue: 18000, confidence: 62, effort: "Low",
+    sources: ["Mixpanel"], actionType: "outreach",
+    rationale: [
+      "Low feature adoption during onboarding (35%)",
+      "Onboarding 2 of 4 sessions complete",
+      "New-account lifecycle stage",
+    ],
+  },
+];
+
+export function getRecommendationSummary() {
+  const totalImpact = recommendations
+    .filter((r) => r.category !== "Efficiency" && r.impactValue > 0 && r.impact.includes("ARR"))
+    .reduce((s, r) => s + r.impactValue, 0);
+  return {
+    total: recommendations.length,
+    critical: recommendations.filter((r) => r.priority === "critical").length,
+    high: recommendations.filter((r) => r.priority === "high").length,
+    avgConfidence: Math.round(recommendations.reduce((s, r) => s + r.confidence, 0) / recommendations.length),
+    totalImpact,
   };
 }

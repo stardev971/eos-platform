@@ -16,18 +16,21 @@ import {
   Lock,
   Plug,
   Brain,
+  Rocket,
 } from "lucide-react";
+
+const EXPERT_CALL_URL = "https://meetings-na2.hubspot.com/jay-sonavani";
 
 const navSections = [
   {
     title: "Intelligence Modules",
     items: [
+      { label: "Executive Overview", href: "/dashboard/executive", icon: LayoutDashboard, active: true },
       { label: "Customer Profitability", href: "/dashboard/profitability", icon: DollarSign, active: true },
       { label: "Churn Risk Intelligence", href: "/dashboard/churn", icon: AlertTriangle, active: true },
-      { label: "Executive Overview", href: "#", icon: LayoutDashboard, active: false },
-      { label: "Revenue Operations", href: "#", icon: TrendingUp, active: false },
-      { label: "Team Efficiency", href: "#", icon: Users, active: false },
-      { label: "AI Recommendations", href: "#", icon: Sparkles, active: false },
+      { label: "Revenue Operations", href: "/dashboard/revenue-ops", icon: TrendingUp, active: true },
+      { label: "Team Efficiency", href: "/dashboard/team-efficiency", icon: Users, active: true },
+      { label: "AI Recommendations", href: "/dashboard/ai-recommendations", icon: Sparkles, active: true },
     ],
   },
   {
@@ -47,14 +50,14 @@ export default function Sidebar() {
     <aside className="w-[220px] h-screen bg-white border-r border-surface-200 flex flex-col fixed left-0 top-0 z-30">
       {/* Logo */}
       <div className="px-4 py-4 pb-3">
-        <Link href="/dashboard/profitability" className="flex items-center gap-2.5">
+        <Link href="/dashboard/executive" className="flex items-center gap-2.5">
           <div className="brand-mark w-8 h-8 rounded-lg">
             <Activity className="w-4 h-4 text-white" />
           </div>
           <div>
-            <span className="text-base font-bold text-surface-900 tracking-tight">EOS</span>
+            <span className="text-base font-bold text-surface-900 tracking-tight">SaaS OS</span>
             <p className="text-[9px] text-surface-500 -mt-0.5 font-semibold tracking-widest uppercase">
-              Executive OS
+              SaaS Operating System
             </p>
           </div>
         </Link>
@@ -102,6 +105,24 @@ export default function Sidebar() {
           </div>
         ))}
       </nav>
+
+      {/* Build Your Own — Expert Call CTA */}
+      <div className="px-2.5 pt-1.5 pb-1">
+        <a href={EXPERT_CALL_URL} target="_blank" rel="noopener noreferrer" className="block group">
+          <div className="rounded-xl bg-gradient-to-br from-brand-700 to-brand-900 p-3 shadow-sm group-hover:shadow-md transition-shadow">
+            <p className="text-[11px] font-semibold text-white leading-snug">
+              Want a SaaS OS like this for your business?
+            </p>
+            <p className="text-[10px] text-brand-200 leading-snug mt-0.5 mb-2">
+              We&apos;ll build one around your own data.
+            </p>
+            <div className="flex items-center justify-center gap-1.5 bg-white text-brand-800 rounded-lg py-1.5 text-[11px] font-semibold group-hover:bg-brand-50 transition-colors">
+              <Rocket className="w-3.5 h-3.5" />
+              Book a Call with Our Expert
+            </div>
+          </div>
+        </a>
+      </div>
 
       {/* Bottom */}
       <div className="border-t border-surface-200 p-2.5">

@@ -80,7 +80,7 @@ export default function OutreachScheduler({ open, onClose, customerName }: Props
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-surface-600 mb-1.5">EOS Attendees</label>
+              <label className="block text-xs font-medium text-surface-600 mb-1.5">SaaS OS Attendees</label>
               <select value={attendees} onChange={(e) => setAttendees(e.target.value)} className="input-field text-sm">
                 <option value="ceo">Alex Morgan (CEO)</option>
                 <option value="vp-cs">Sarah Chen (VP CS) + CEO</option>

@@ -64,11 +64,11 @@ export default function ForgotPasswordPage() {
                 <Activity className="w-5 h-5 text-white" />
               </div>
               <span className="text-xl font-bold text-white tracking-tight">
-                EOS
+                SaaS OS
               </span>
             </div>
             <p className="text-brand-200 text-sm ml-[52px]">
-              Executive Operating System
+              SaaS Operating System
             </p>
           </div>
 
@@ -132,10 +132,10 @@ export default function ForgotPasswordPage() {
             </div>
             <div>
               <span className="text-xl font-bold text-surface-900 tracking-tight">
-                EOS
+                SaaS OS
               </span>
               <p className="text-xs text-surface-500">
-                Executive Operating System
+                SaaS Operating System
               </p>
             </div>
           </div>

@@ -205,7 +205,7 @@ export default function CampaignLauncher({ open, onClose, customerName, context 
             </div>
 
             <div className="p-3 rounded-lg bg-blue-50 border border-blue-100 text-xs text-blue-700">
-              <span className="font-semibold">What happens next:</span> The selected contacts will be enrolled in this HubSpot sequence immediately. You can track progress in HubSpot or from the EOS activity feed.
+              <span className="font-semibold">What happens next:</span> The selected contacts will be enrolled in this HubSpot sequence immediately. You can track progress in HubSpot or from the SaaS OS activity feed.
             </div>
 
             <div className="flex justify-between pt-3">

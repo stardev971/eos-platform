@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 export default function DashboardIndex() {
   const router = useRouter();
   useEffect(() => {
-    router.replace("/dashboard/profitability");
+    router.replace("/dashboard/executive");
   }, [router]);
   return null;
 }

@@ -32,7 +32,7 @@ export default function LoginPage() {
   // Redirect if already authenticated
   useEffect(() => {
     if (!isLoading && isAuthenticated) {
-      router.replace("/dashboard/profitability");
+      router.replace("/dashboard/executive");
     }
   }, [isLoading, isAuthenticated, router]);
 
@@ -53,7 +53,7 @@ export default function LoginPage() {
     if (ok) {
       setSuccess(true);
       setTimeout(() => {
-        router.push("/dashboard/profitability");
+        router.push("/dashboard/executive");
       }, 800);
     } else {
       setError("Invalid email or password. Please try again.");
@@ -94,9 +94,9 @@ export default function LoginPage() {
               <div className="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-sm flex items-center justify-center border border-white/10">
                 <Activity className="w-5 h-5 text-white" />
               </div>
-              <span className="text-xl font-bold text-white tracking-tight">EOS</span>
+              <span className="text-xl font-bold text-white tracking-tight">SaaS OS</span>
             </div>
-            <p className="text-brand-200 text-sm ml-[52px]">Executive Operating System</p>
+            <p className="text-brand-200 text-sm ml-[52px]">SaaS Operating System</p>
           </div>
 
           {/* Hero */}
@@ -121,7 +121,7 @@ export default function LoginPage() {
               transition={{ delay: 0.5, duration: 0.6 }}
               className="text-brand-200 text-lg max-w-md leading-relaxed"
             >
-              Stop stitching together dashboards. EOS connects revenue,
+              Stop stitching together dashboards. SaaS OS connects revenue,
               churn, support, and delivery data so you can make faster,
               better-informed decisions.
             </motion.p>
@@ -170,8 +170,8 @@ export default function LoginPage() {
               <Activity className="w-5 h-5 text-white" />
             </div>
             <div>
-              <span className="text-xl font-bold text-surface-900 tracking-tight">EOS</span>
-              <p className="text-xs text-surface-500">Executive Operating System</p>
+              <span className="text-xl font-bold text-surface-900 tracking-tight">SaaS OS</span>
+              <p className="text-xs text-surface-500">SaaS Operating System</p>
             </div>
           </div>
 

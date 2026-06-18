@@ -3,7 +3,7 @@ import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
 
 export const metadata: Metadata = {
-  title: "EOS — Executive Operating System",
+  title: "SaaS OS — SaaS Operating System",
   description: "Unified Operational Intelligence for SaaS Leadership",
 };
 

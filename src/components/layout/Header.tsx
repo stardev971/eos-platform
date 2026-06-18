@@ -15,7 +15,10 @@ import {
   LogOut,
   User,
   X,
+  Rocket,
 } from "lucide-react";
+
+const EXPERT_CALL_URL = "https://meetings-na2.hubspot.com/jay-sonavani";
 
 export default function Header() {
   const router = useRouter();
@@ -56,6 +59,18 @@ export default function Header() {
 
       {/* Right */}
       <div className="flex items-center gap-1.5">
+        {/* Build Your Own — Expert Call CTA */}
+        <a
+          href={EXPERT_CALL_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hidden md:flex items-center gap-1.5 px-3 py-1.5 mr-1 rounded-lg bg-brand-600 hover:bg-brand-700 text-white text-xs font-semibold shadow-sm transition-colors"
+          title="Book a call to build a SaaS Operating System for your business"
+        >
+          <Rocket className="w-3.5 h-3.5" />
+          Build Your Own SaaS OS
+        </a>
+
         {/* Date Range */}
         <button className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg hover:bg-surface-100 transition-colors text-xs text-surface-600">
           <Calendar className="w-3.5 h-3.5" />

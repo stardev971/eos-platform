@@ -947,7 +947,7 @@ function ConnectionModal({
                         <span className="text-xs font-semibold text-surface-700">OAuth 2.0 Authorization</span>
                       </div>
                       <p className="text-xs text-surface-500 mb-4">
-                        You&apos;ll be redirected to {integration.name} to authorize EOS Platform. We request read-only access to your data by default.
+                        You&apos;ll be redirected to {integration.name} to authorize SaaS OS. We request read-only access to your data by default.
                       </p>
                       <div className="space-y-2">
                         {["Read account data & metadata", "Access contacts/records (read-only)", "Webhook event subscriptions"].map(
@@ -1103,7 +1103,7 @@ function ConnectionModal({
                 <div>
                   <h4 className="text-sm font-bold text-surface-900">Successfully Connected</h4>
                   <p className="text-xs text-surface-500 mt-1">
-                    {integration.name} is now linked to EOS Platform. Initial data sync will begin shortly.
+                    {integration.name} is now linked to SaaS OS. Initial data sync will begin shortly.
                   </p>
                 </div>
                 <div className="grid grid-cols-3 gap-3 pt-2">
